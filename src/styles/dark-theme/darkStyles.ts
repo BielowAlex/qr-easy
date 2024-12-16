@@ -1,0 +1,90 @@
+import { ThemeOptions } from '@mui/material/styles';
+
+export const darkStyles: ThemeOptions = {
+  palette: {
+    mode: 'dark',
+    common: {
+      black: '#000',
+      white: '#fff',
+    },
+    primary: {
+      main: '#FFFFFF',
+      light: '#EAEAEA',
+      dark: '#C9C9C9',
+      contrastText: '#fff',
+    },
+    secondary: {
+      main: '#EF9A9A',
+      light: '#B96362',
+      dark: '#8E0A07',
+      contrastText: 'rgba(255,255,255,0.96)',
+    },
+    error: {
+      main: '#F44336',
+      light: '#E57373',
+      dark: '#D32F2F',
+      contrastText: '#fff',
+    },
+    warning: {
+      main: '#FFA726',
+      light: '#FFB74D',
+      dark: '#F57C00',
+      contrastText: 'rgba(0, 0, 0, 0.87)',
+    },
+    info: {
+      main: '#29B6F6',
+      light: '#4FC3F7',
+      dark: '#0288D1',
+      contrastText: 'rgba(0, 0, 0, 0.87)',
+    },
+    success: {
+      main: '#66BB6A',
+      light: '#81C784',
+      dark: '#388E3C',
+      contrastText: 'rgba(0, 0, 0, 0.87)',
+    },
+    grey: {
+      '50': '#FAFAFA',
+      '100': '#F5F5F5',
+      '200': '#EEEEEE',
+      '300': '#E0E0E0',
+      '400': '#A3A3A3',
+      '500': '#737373',
+      '600': '#757575',
+      '700': '#616161',
+      '800': '#424242',
+      '900': '#212121',
+      A100: '#F5F5F5',
+      A200: '#EEEEEE',
+      A400: '#BDBDBD',
+      A700: '#616161',
+    },
+    contrastThreshold: 3,
+    tonalOffset: 0.2,
+    text: {
+      primary: '#fff',
+      secondary: 'rgba(255, 255, 255, 0.7)',
+      disabled: 'rgba(255, 255, 255, 0.5)',
+      // @ts-ignore
+      icon: 'rgba(255, 255, 255, 0.5)',
+    },
+    divider: '#717680',
+    background: {
+      paper: '#121212',
+      default: '#121212',
+    },
+    action: {
+      active: '#fff',
+      hover: 'rgba(255, 255, 255, 0.08)',
+      hoverOpacity: 0.08,
+      selected: 'rgba(255, 255, 255, 0.16)',
+      selectedOpacity: 0.16,
+      disabled: 'rgba(255, 255, 255, 0.3)',
+      disabledBackground: 'rgba(255, 255, 255, 0.12)',
+      disabledOpacity: 0.38,
+      focus: 'rgba(255, 255, 255, 0.12)',
+      focusOpacity: 0.12,
+      activatedOpacity: 0.24,
+    },
+  },
+};

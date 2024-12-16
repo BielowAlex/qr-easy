@@ -1,13 +1,13 @@
+import { PageLoaderLayout } from '@/components/layouts';
+import { MuiThemeProvider, NextAuthProvider } from '@/lib';
+import { TRPCReactProvider } from '@/lib/providers/TrpcProvider';
 import { config } from '@fortawesome/fontawesome-svg-core';
+import '@fortawesome/fontawesome-svg-core/styles.css';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import type { Metadata } from 'next';
 import { Montserrat } from 'next/font/google';
 import { cookies } from 'next/headers';
-
-import { NextAuthProvider } from '@/lib';
-import { TRPCReactProvider } from '@/lib/providers/TrpcProvider';
-import '@fortawesome/fontawesome-svg-core/styles.css';
 import React from 'react';
-import '../styles/globals.scss';
 
 const montserratInit = Montserrat({
   subsets: ['cyrillic'],
@@ -30,11 +30,15 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${montserratInit.variable}`}>
-        <NextAuthProvider>
-          <TRPCReactProvider cookies={await cookies().toString()}>
-            <div className="container">{children}</div>
-          </TRPCReactProvider>
-        </NextAuthProvider>
+        <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+          <NextAuthProvider>
+            <MuiThemeProvider>
+              <TRPCReactProvider cookies={await cookies().toString()}>
+                <PageLoaderLayout>{children}</PageLoaderLayout>
+              </TRPCReactProvider>
+            </MuiThemeProvider>
+          </NextAuthProvider>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );

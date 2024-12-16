@@ -5,8 +5,6 @@ import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-import style from './style.module.scss';
-
 const SignInPage: React.FC = () => {
   const router = useRouter();
   const { status } = useSession();
@@ -20,20 +18,18 @@ const SignInPage: React.FC = () => {
     if (status === 'authenticated') {
       router.push('/');
     }
-  }, [status]);
+  }, [router, status]);
 
   return (
-    <div className={style.container}>
-      <h2 className={style.title}>
+    <div>
+      <h2>
         Log in to your <br /> account
       </h2>
-      <button className={style.button} onClick={handleLogin}>
-        <FontAwesomeIcon icon={faGoogle} className={style.icon} />
+      <button onClick={handleLogin}>
+        <FontAwesomeIcon icon={faGoogle} />
         <span>Sign-in</span>
       </button>
-      <span className={style.warn}>
-        By clicking the button, you agree to the privacy policy.
-      </span>
+      <span>By clicking the button, you agree to the privacy policy.</span>
     </div>
   );
 };
