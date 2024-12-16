@@ -1,12 +1,12 @@
 import { Stack } from '@mui/material';
 import React from 'react';
 
-const ProfilePage: React.FC = () => {
+const MyPagesPage: React.FC = () => {
   return (
     <Stack>
-      <h1>Dashboard</h1>
+      <h1>Pages</h1>
     </Stack>
   );
 };
 
-export default ProfilePage;
+export default MyPagesPage;

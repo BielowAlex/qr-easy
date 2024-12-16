@@ -1,5 +1,5 @@
 'use client';
-import { Header } from '@/feature';
+import { MainMenu } from '@/feature';
 import { Stack } from '@mui/material';
 import React from 'react';
 
@@ -12,8 +12,15 @@ export default function FoldersLayout(props: { children: React.ReactNode }) {
         width: '100%',
       }}
     >
-      <Header />
-      {children}
+      <Stack
+        direction={'row'}
+        sx={{
+          height: '100%',
+        }}
+      >
+        <MainMenu />
+        {children}
+      </Stack>
     </Stack>
   );
 }

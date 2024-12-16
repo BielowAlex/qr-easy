@@ -14,7 +14,7 @@ const Header: React.FC = () => {
         alignItems={'center'}
         justifyContent={'space-between'}
         width={'100%'}
-        padding={8}
+        padding={'8px 24px'}
       >
         <Logo />
         {isLoggedIn ? <UserPopup /> : <AuthButtons />}
