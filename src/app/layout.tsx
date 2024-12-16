@@ -1,20 +1,18 @@
-import { NextAuthProvider } from '@/lib';
+import { config } from '@fortawesome/fontawesome-svg-core';
 import type { Metadata } from 'next';
-import localFont from 'next/font/local';
+import { Montserrat } from 'next/font/google';
+import { cookies } from 'next/headers';
+
+import { NextAuthProvider } from '@/lib';
+import { TRPCReactProvider } from '@/lib/providers/TrpcProvider';
+import '@fortawesome/fontawesome-svg-core/styles.css';
+import React from 'react';
 import '../styles/globals.scss';
 
-import { config } from '@fortawesome/fontawesome-svg-core';
-import '@fortawesome/fontawesome-svg-core/styles.css';
-
-const geistSans = localFont({
-  src: './fonts/GeistVF.woff',
-  variable: '--font-geist-sans',
-  weight: '100 900',
-});
-const geistMono = localFont({
-  src: './fonts/GeistMonoVF.woff',
-  variable: '--font-geist-mono',
-  weight: '100 900',
+const montserratInit = Montserrat({
+  subsets: ['cyrillic'],
+  weight: ['300', '400', '500', '600', '700', '800', '900'],
+  variable: '--font-montserrat',
 });
 
 config.autoAddCss = false;
@@ -24,16 +22,18 @@ export const metadata: Metadata = {
   description: 'TicTacToe online game',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={`${montserratInit.variable}`}>
         <NextAuthProvider>
-          <div className="container">{children}</div>
+          <TRPCReactProvider cookies={await cookies().toString()}>
+            <div className="container">{children}</div>
+          </TRPCReactProvider>
         </NextAuthProvider>
       </body>
     </html>

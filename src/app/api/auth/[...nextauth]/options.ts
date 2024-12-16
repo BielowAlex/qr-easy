@@ -1,49 +1,25 @@
 import { db } from '@/lib/db';
 import { User } from '@prisma/client';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { GetServerSidePropsContext } from 'next';
-import { getServerSession, Session } from 'next-auth';
+import {
+  AuthOptions,
+  getServerSession,
+  Session,
+  SessionStrategy,
+} from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 import GoogleProvider from 'next-auth/providers/google';
-
-const clientId = process.env.GOOGLE_CLIENT_ID;
-const clientSecret = process.env.GOOGLE_SECRET_KEY;
+const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+const clientSecret = process.env.NEXT_PUBLIC_GOOGLE_SECRET_KEY;
 
 if (!clientId || !clientSecret) {
+  console.log('clientId:', clientId);
+  console.log('clientSecret:', clientSecret);
   throw new Error('setup auth env');
 }
 
-export const options: {
-  pages: { signIn: string };
-  session: { strategy: string };
-  callbacks: {
-    jwt({
-      token,
-      user,
-      account,
-    }: {
-      token: any;
-      user: any;
-      account: any;
-    }): Promise<any>;
-    session({
-      session: untypedSession,
-      token: untypedToken,
-    }: {
-      session: any;
-      token: any;
-    }): Session & {
-      user: { id: string };
-    };
-    signIn({
-      account,
-      profile: untypedProfile,
-    }: {
-      account: any;
-      profile: any;
-    }): Promise<boolean>;
-  };
-  providers: any[];
-} = {
+export const options: AuthOptions = {
   providers: [
     GoogleProvider({
       clientId,
@@ -61,33 +37,33 @@ export const options: {
     signIn: '/',
   },
   session: {
-    strategy: 'jwt',
+    strategy: 'jwt' as SessionStrategy,
   },
   callbacks: {
-    async signIn({ account, profile: untypedProfile }) {
-      const profile = untypedProfile as typeof untypedProfile & {
+    async signIn({ profile }) {
+      const typedProfile = profile as typeof profile & {
         picture: string;
         email_verified: boolean;
+        given_name: string;
+        family_name: string;
       };
 
-      const authUserId = profile?.sub.toString();
+      const authUserId = typedProfile?.sub?.toString() || '0';
 
       const user = await db.user.findFirst({
-        where: {
-          authUserId: profile?.sub.toString(),
-        },
+        where: { authUserId },
       });
 
-      if (!user && profile) {
+      if (!user && typedProfile) {
         try {
           await db.user.create({
             data: {
               authUserId,
-              email: profile.email || '',
-              nickname: profile.name || '',
-              avatar: profile.picture || '',
-              firstName: profile.given_name || '',
-              lastName: profile.family_name || '',
+              email: typedProfile.email || '',
+              nickname: typedProfile.name || '',
+              avatar: typedProfile.picture || '',
+              firstName: typedProfile.given_name || '',
+              lastName: typedProfile.family_name || '',
             },
           });
         } catch (e) {
@@ -98,18 +74,7 @@ export const options: {
     },
     async jwt({ token, user, account }) {
       if (!token.role) {
-        let where:
-          | {
-              id: string;
-            }
-          | {
-              authUserId: string;
-            } = {
-          id: (token.id as string) || '',
-        };
-        where = {
-          authUserId: (token.id as string) || '',
-        };
+        const where = { authUserId: (token.id as string) || '' };
 
         const userDb: User | null = (await db.user.findFirst({
           where,
@@ -125,17 +90,15 @@ export const options: {
 
       return { ...token, ...user, ...account };
     },
-    session({ session: untypedSession, token: untypedToken }) {
-      const session = untypedSession as Session & {
-        user: { id: string };
-      };
+    session({ session, token }: { session: any; token: any }) {
+      const typedSession = session as Session & { user: { id: string } };
+      const typedToken = token as JWT & { userId: string };
 
-      const token = untypedToken as JWT & { userId: string };
-      if (token && session.user) {
-        session.user.id = token.userId;
+      if (typedToken && typedSession.user) {
+        typedSession.user.id = typedToken.userId;
       }
 
-      return session;
+      return typedSession;
     },
   },
 };
@@ -145,9 +108,13 @@ export const options: {
  *
  * @see https://next-auth.js.org/configuration/nextjs
  */
-export const getServerAuthSession = (ctx: {
-  req: GetServerSidePropsContext['req'];
-  res: GetServerSidePropsContext['res'];
-}) => {
-  return getServerSession(...ctx, options);
-};
+
+type ArgType =
+  | [GetServerSidePropsContext['req'], GetServerSidePropsContext['res']]
+  | [NextApiRequest, NextApiResponse]
+  | [];
+
+// @ts-ignore: Ігноруємо попередження про неправильний тип для рест параметра
+export function getServerAuthSession(...args: ArgType) {
+  return getServerSession(...args, options);
+}

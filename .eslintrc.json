@@ -3,6 +3,8 @@
   "plugins": ["prettier"],
   "rules": {
     "prettier/prettier": "error",
-    "@typescript-eslint/no-explicit-any": "off"
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "no-unused-expressions": "off"
   }
 }

@@ -25,3 +25,80 @@ $maxWidth: 1600;
     font-style: $style;
   }
 }
+
+@mixin placeholder($color, $size, $weight) {
+  &::-webkit-input-placeholder {
+    color: $color;
+    font-size: $size;
+    font-weight: $weight;
+  }
+  &:-moz-placeholder {
+    color: $color;
+    font-size: $size;
+    font-weight: $weight;
+  }
+  &::-moz-placeholder {
+    color: $color;
+    font-size: $size;
+    font-weight: $weight;
+  }
+  &:-ms-input-placeholder {
+    color: $color;
+    font-size: $size;
+    font-weight: $weight;
+  }
+}
+
+
+@mixin flex-col-alc-jsb{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin flex-col{
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin flex-alc{
+  display: flex;
+  align-items: center;
+}
+
+@mixin flex-col-alc{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@mixin flex-col-jsb{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+@mixin flex-col-cent{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-alc-jsb{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin flex-center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-jsb{
+  display: flex;
+  justify-content: space-between;
+}

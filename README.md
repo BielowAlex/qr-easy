@@ -1,4 +1,4 @@
-# TicTacToe online (T3 online)
+# QrEasy -  catalog/menu web page generator
 
 ## Technologies Used
 

@@ -1,13 +1,14 @@
-import { options } from '@/app/api/auth/[...nextauth]/options';
-import { getServerSession } from 'next-auth';
+'use client';
+import { Header } from '@/feature/Header';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 
-export default async function HomePage() {
-  const session = await getServerSession(options);
+export default function HomePage() {
+  const { data: session } = useSession();
 
-  console.log(session?.user);
   return (
     <div>
+      <Header />
       <h1>Welcome, {session?.user?.name}</h1>
       <p>Email: {session?.user?.email}</p>
       <Image

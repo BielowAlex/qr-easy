@@ -1,8 +1,13 @@
-// lib/db.ts
-
 import { PrismaClient } from '@prisma/client';
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace NodeJS {
+    interface Global {
+      prisma: PrismaClient;
+    }
+  }
+  // eslint-disable-next-line no-var
   var prisma: PrismaClient | undefined;
 }
 
