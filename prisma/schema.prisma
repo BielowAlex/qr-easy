@@ -24,4 +24,15 @@ model User {
   updatedAt  DateTime @updatedAt
   isOnline   Boolean  @default(false)
   authUserId String?  @unique
+  qrCodes    QRCode[] @relation("UserQRCodes")
+}
+
+model QRCode {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  value       String
+  imageBase64 String
+  title       String
+  ownerId     String   @db.ObjectId
+  owner       User     @relation("UserQRCodes", fields: [ownerId], references: [id])
+  createdAt   DateTime @default(now())
 }
