@@ -10,16 +10,17 @@ import { cookies } from 'next/headers';
 import React from 'react';
 
 const montserratInit = Montserrat({
-  subsets: ['cyrillic'],
+  subsets: ['latin', 'cyrillic'],
   weight: ['300', '400', '500', '600', '700', '800', '900'],
   variable: '--font-montserrat',
+  display: 'swap',
 });
 
 config.autoAddCss = false;
 
 export const metadata: Metadata = {
-  title: 'T3 Online',
-  description: 'TicTacToe online game',
+  title: 'QR-easy',
+  description: 'QR-easy easy solution for your business.',
 };
 
 export default async function RootLayout({

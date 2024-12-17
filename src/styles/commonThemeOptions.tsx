@@ -79,7 +79,7 @@ export const commonThemeOptions: ThemeOptions = {
   },
   typography: {
     htmlFontSize: 16,
-    fontFamily: '"Montserrat", sans-serif',
+    fontFamily: 'var(--font-montserrat)',
     fontSize: 14,
     fontWeightLight: 300,
     fontWeightRegular: 400,
