@@ -1,3 +1,4 @@
+'use client';
 import { ProfilePopup } from '@/feature/UserPopup/components';
 import { useUserStore } from '@/lib/stores/UserStore';
 import { Avatar, Badge, Box, Button } from '@mui/material';

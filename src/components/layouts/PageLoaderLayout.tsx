@@ -13,7 +13,9 @@ interface Props {
 const PageLoaderLayout: React.FC<Props> = ({ children }) => {
   const { data: session, status } = useSession();
 
-  const { signIn, signOut, isLoggedIn } = useUserStore();
+  const { signIn, signOut, user } = useUserStore();
+
+  console.log(status);
 
   const { mutateAsync: getUserByToken } = api.users.getUserById.useMutation();
 
@@ -29,7 +31,7 @@ const PageLoaderLayout: React.FC<Props> = ({ children }) => {
     }
   }, [status, session, signOut, getUserByToken, signIn]);
 
-  if (status === 'loading' || !isLoggedIn) {
+  if (status === 'loading' || (status === 'authenticated' && !user)) {
     return <PageLoader />;
   }
 

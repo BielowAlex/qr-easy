@@ -1,8 +1,8 @@
-import { Pages } from '@/feature/Pages';
+import { QrPage } from '@/feature/QrPage/QrPage';
 import React from 'react';
 
 const MyPagesPage: React.FC = () => {
-  return <Pages />;
+  return <QrPage />;
 };
 
 export default MyPagesPage;

@@ -1,3 +1,4 @@
+'use client';
 import { MenuButton, SidebarIcon, UserPopup } from '@/feature';
 import { useUserStore } from '@/lib/stores/UserStore';
 import AutoStoriesRoundedIcon from '@mui/icons-material/AutoStoriesRounded';
@@ -22,8 +23,8 @@ const Container = styled(Stack)(({ theme }) => ({
 const ButtonText = styled(Typography)(({ theme }) => ({
   fontWeight: 300,
   color: theme.palette.common.white,
-  maxWidth: 90,
-  wordBreak: 'break',
+  maxWidth: '90px',
+  wordBreak: 'break-word',
   whiteSpace: 'nowrap',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
@@ -76,15 +77,15 @@ const MainMenu: React.FC = () => {
         </StyledButton>
         <Divider />
         <MenuButton
-          href={'/profile/pages'}
+          href={'/profile'}
           label={'Dashboard'}
           isSmall={isSmall}
           icon={
             <DashboardRoundedIcon
-              sx={{ color: pathname.includes('profile') ? '#fff' : '#717680' }}
+              sx={{ color: pathname === '/profile' ? '#fff' : '#717680' }}
             />
           }
-          isActive={pathname.includes('profile')}
+          isActive={pathname === '/profile'}
         />
         <MenuButton
           href={'/profile/pages'}
@@ -98,7 +99,7 @@ const MainMenu: React.FC = () => {
           isActive={pathname.includes('pages')}
         />
         <MenuButton
-          href={'/profile/pages'}
+          href={'/profile/qr'}
           isSmall={isSmall}
           label={'My QR-s'}
           icon={

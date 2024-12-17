@@ -9,6 +9,8 @@ export default function FoldersLayout(props: { children: React.ReactNode }) {
     <Stack
       sx={{
         height: '100dvh',
+        maxHeight: '100dvh',
+        overflow: 'hidden',
         width: '100%',
       }}
     >

@@ -1,3 +1,4 @@
+'use client';
 import { ThemeSwitcher } from '@/feature/UserPopup/components/ThemeSwitcher';
 import { ShortcutIcons } from '@/feature/UserPopup/icons';
 import { useUserStore } from '@/lib/stores/UserStore';

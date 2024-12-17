@@ -8,6 +8,7 @@ import React from 'react';
 const SignInPage: React.FC = () => {
   const router = useRouter();
   const { status } = useSession();
+
   const handleLogin = async () => {
     await signIn('google');
   };
