@@ -107,10 +107,12 @@ export const qrCodeRouter = createTrpcRouter({
         .catch((e) => {
           console.error(e);
           throw new TRPCError({
-            code: TRPC_ERROR_CODES.INTERNAL_SERVER_ERROR,
-            message: 'Failed to delete QR Code',
+            code: TRPC_ERROR_CODES.NOT_FOUND,
+            message: 'QR Code not found or unauthorized',
           });
         });
+
+      console.log(qrCode);
 
       if (!qrCode) {
         throw new TRPCError({

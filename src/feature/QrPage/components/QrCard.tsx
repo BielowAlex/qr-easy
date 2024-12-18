@@ -30,13 +30,19 @@ interface Props {
   id: string;
   title: string;
   value: string;
+  handleSelectQr: (id: string) => void;
 }
 
-const QrCard: React.FC<Props> = ({ value, title }) => {
+const QrCard: React.FC<Props> = ({ id, value, title, handleSelectQr }) => {
   const qrRef = useRef<HTMLCanvasElement>(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLButtonElement>(null);
 
-  const downloadQRCode = () => {
+  const handleDeleteQr = () => {
+    handleSelectQr(id);
+    setAnchorEl(null);
+  };
+
+  const handleDownloadQRCode = () => {
     if (qrRef.current) {
       const link = document.createElement('a');
       link.href = qrRef.current.toDataURL('image/png');
@@ -45,7 +51,7 @@ const QrCard: React.FC<Props> = ({ value, title }) => {
     }
   };
 
-  const openInNewTab = () => {
+  const handleOpenInNewTab = () => {
     if (typeof window !== 'undefined') {
       window.open(value, '_blank', 'noopener,noreferrer');
     }
@@ -84,7 +90,11 @@ const QrCard: React.FC<Props> = ({ value, title }) => {
                 onClose={() => setAnchorEl(null)}
                 sx={{ padding: 0 }}
               >
-                <MenuItem disableRipple sx={{ gap: 8 }} onClick={openInNewTab}>
+                <MenuItem
+                  disableRipple
+                  sx={{ gap: 8 }}
+                  onClick={handleOpenInNewTab}
+                >
                   <OpenInNewRoundedIcon fontSize={'small'} />
                   <Typography variant={'h4'} fontSize={16} fontWeight={600}>
                     Open
@@ -93,7 +103,7 @@ const QrCard: React.FC<Props> = ({ value, title }) => {
                 <MenuItem
                   disableRipple
                   sx={{ gap: 8 }}
-                  onClick={downloadQRCode}
+                  onClick={handleDownloadQRCode}
                 >
                   <DownloadRoundedIcon fontSize={'small'} />
                   <Typography variant={'h4'} fontSize={16} fontWeight={600}>
@@ -106,7 +116,11 @@ const QrCard: React.FC<Props> = ({ value, title }) => {
                     margin: '0 !important',
                   }}
                 />
-                <MenuItem disableRipple sx={{ gap: 8 }}>
+                <MenuItem
+                  disableRipple
+                  sx={{ gap: 8 }}
+                  onClick={handleDeleteQr}
+                >
                   <DeleteOutlineRoundedIcon fontSize={'small'} />
                   <Typography variant={'h4'} fontSize={16} fontWeight={600}>
                     Delete

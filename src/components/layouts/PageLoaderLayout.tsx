@@ -15,8 +15,6 @@ const PageLoaderLayout: React.FC<Props> = ({ children }) => {
 
   const { signIn, signOut, user } = useUserStore();
 
-  console.log(status);
-
   const { mutateAsync: getUserByToken } = api.users.getUserById.useMutation();
 
   useEffect(() => {

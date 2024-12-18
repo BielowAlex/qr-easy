@@ -23,7 +23,7 @@ export const darkStyles: ThemeOptions = {
       main: '#F44336',
       light: '#E57373',
       dark: '#D32F2F',
-      contrastText: '#fff',
+      contrastText: '#090909',
     },
     warning: {
       main: '#FFA726',

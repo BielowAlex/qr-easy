@@ -189,7 +189,7 @@ const CreateQrModal: React.FC<Props> = ({
                 disabled={
                   !isUrlValid ||
                   inputLink.length === 0 ||
-                  inputTitle.trim().length === 0
+                  inputTitle.trim().length < 2
                 }
                 onClick={handleQrCreate}
               >

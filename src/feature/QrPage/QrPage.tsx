@@ -18,7 +18,7 @@ const QrPage: React.FC = () => {
         count={data?.length ?? 0}
         handleCreateNew={() => setIsCreateModalOpen(true)}
       />
-      <QrList qrList={data || []} />
+      <QrList qrList={data || []} refetch={refetch} />
       <CreateQrModal
         refetch={refetch}
         isModalOpen={isCreateModalOpen}
