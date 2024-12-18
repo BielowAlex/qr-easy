@@ -1,6 +1,5 @@
 'use client';
 import { QrCard } from '@/feature/QrPage/components/QrCard';
-import { api } from '@/lib';
 import { IQRCode } from '@/types/qr-interface';
 import { Grid2, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -15,14 +14,15 @@ const Container = styled(Stack)({
 
 const ListContainer = styled(Grid2)({
   padding: '24px',
-  height: '100%',
   width: '100%',
   maxWidth: '1600px !important',
 });
 
-const QrList: React.FC = () => {
-  const { data = [] } = api.qr.getAll.useQuery<IQRCode[]>();
+interface Props {
+  qrList: IQRCode[];
+}
 
+const QrList: React.FC<Props> = ({ qrList }) => {
   return (
     <Container
       alignItems={'center'}
@@ -31,18 +31,11 @@ const QrList: React.FC = () => {
     >
       <ListContainer
         container
-        justifyContent="space-between"
-        sx={{
-          justifyContent: {
-            xs: 'space-between',
-            sm: 'space-between',
-            md: data.length >= 3 ? 'space-between' : 'flex-start',
-            lg: data.length >= 4 ? 'space-between' : 'flex-start',
-          },
-        }}
+        justifyContent="flex-start"
+        alignItems="flex-start"
         spacing={2}
       >
-        {data.map((el) => (
+        {qrList.map((el) => (
           <QrCard key={el.id} title={el.title} value={el.value} id={el.id} />
         ))}
       </ListContainer>

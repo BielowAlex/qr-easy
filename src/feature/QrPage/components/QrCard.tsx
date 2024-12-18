@@ -40,7 +40,7 @@ const QrCard: React.FC<Props> = ({ value, title }) => {
     if (qrRef.current) {
       const link = document.createElement('a');
       link.href = qrRef.current.toDataURL('image/png');
-      link.download = `qreasy-${title}.png`;
+      link.download = `qreasy-${title.toLowerCase().replace(' ', '-')}.png`;
       link.click();
     }
   };
@@ -52,7 +52,11 @@ const QrCard: React.FC<Props> = ({ value, title }) => {
   };
 
   return (
-    <Grid2 size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+    <Grid2
+      size={{ xs: 12, sm: 6, md: 4, lg: 3 }}
+      height={336}
+      sx={{ maxHeight: 336 }}
+    >
       <CardContainer>
         <Stack sx={{ width: '100%', minWidth: 256 }}>
           <Stack justifyContent={'center'} alignItems={'center'}>
