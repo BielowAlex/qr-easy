@@ -47,6 +47,20 @@ export const qrCodeRouter = createTrpcRouter({
         });
       }
 
+      const existingQRCode = await ctx.db.qRCode.findFirst({
+        where: {
+          ownerId: userId,
+          OR: [{ title: input.title }, { value: input.value }],
+        },
+      });
+
+      if (existingQRCode) {
+        throw new TRPCError({
+          code: TRPC_ERROR_CODES.CONFLICT,
+          message: 'QR Code with this title or value already exists.',
+        });
+      }
+
       const newQr = {
         value: input.value,
         imageBase64: input.imageBase64,
@@ -55,11 +69,9 @@ export const qrCodeRouter = createTrpcRouter({
       };
 
       try {
-        const newQRCode = await ctx.db.qRCode.create({
+        return await ctx.db.qRCode.create({
           data: newQr,
         });
-
-        return { success: true, qrCode: newQRCode };
       } catch (e) {
         console.error(e);
         throw new TRPCError({
@@ -85,21 +97,29 @@ export const qrCodeRouter = createTrpcRouter({
         });
       }
 
-      try {
-        const qrCode = await ctx.db.qRCode.findFirst({
+      const qrCode = await ctx.db.qRCode
+        .findFirst({
           where: {
             id: input.id,
             ownerId: userId,
           },
+        })
+        .catch((e) => {
+          console.error(e);
+          throw new TRPCError({
+            code: TRPC_ERROR_CODES.INTERNAL_SERVER_ERROR,
+            message: 'Failed to delete QR Code',
+          });
         });
 
-        if (!qrCode) {
-          throw new TRPCError({
-            code: TRPC_ERROR_CODES.NOT_FOUND,
-            message: 'QR Code not found or unauthorized',
-          });
-        }
+      if (!qrCode) {
+        throw new TRPCError({
+          code: TRPC_ERROR_CODES.NOT_FOUND,
+          message: 'QR Code not found or unauthorized',
+        });
+      }
 
+      try {
         await ctx.db.qRCode.delete({
           where: {
             id: input.id,

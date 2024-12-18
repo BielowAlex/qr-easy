@@ -6,3 +6,9 @@ export interface IQRCode {
   ownerId: string;
   createdAt: Date;
 }
+
+export interface ICreateQrBody {
+  title: string;
+  value: string;
+  imageBase64: string;
+}
