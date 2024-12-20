@@ -1,6 +1,6 @@
 'use client';
-import { RemoveModal } from '@/components/modals/RemoveModal/RemoveModal';
-import { QrCard } from '@/feature/QrPage/components/QrCard';
+import { RemoveModal } from '@/components';
+import { QrCard } from '@/feature';
 import { api } from '@/lib';
 import { IQRCode } from '@/types/qr-interface';
 import { Alert, Grid2, Snackbar, Stack } from '@mui/material';

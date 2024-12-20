@@ -1,4 +1,5 @@
 'use client';
+import { MenuPopover } from '@/components';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
@@ -9,7 +10,6 @@ import {
   Divider,
   Grid2,
   IconButton,
-  Menu,
   MenuItem,
   Stack,
   Typography,
@@ -79,17 +79,7 @@ const QrCard: React.FC<Props> = ({ id, value, title, handleSelectQr }) => {
               <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
                 <MoreVertRoundedIcon />
               </IconButton>
-              <Menu
-                id="demo-customized-menu"
-                MenuListProps={{
-                  sx: { padding: 0 },
-                  'aria-labelledby': 'demo-customized-button',
-                }}
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={() => setAnchorEl(null)}
-                sx={{ padding: 0 }}
-              >
+              <MenuPopover anchorEl={anchorEl} setAnchorEl={setAnchorEl}>
                 <MenuItem
                   disableRipple
                   sx={{ gap: 8 }}
@@ -126,7 +116,7 @@ const QrCard: React.FC<Props> = ({ id, value, title, handleSelectQr }) => {
                     Delete
                   </Typography>
                 </MenuItem>
-              </Menu>
+              </MenuPopover>
             </Stack>
           </CardContent>
         </Stack>

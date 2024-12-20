@@ -1,7 +1,6 @@
 'use client';
-import { PageHeader } from '@/components';
-import { CreateQrModal } from '@/components/modals/CreateQrModal';
-import { QrList } from '@/feature/QrPage/components';
+import { CreateQrModal, PageHeader } from '@/components';
+import { QrList } from '@/feature';
 import { api } from '@/lib';
 import { Stack } from '@mui/material';
 import React, { useState } from 'react';
