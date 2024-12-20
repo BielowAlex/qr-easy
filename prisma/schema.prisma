@@ -33,6 +33,56 @@ model QRCode {
   imageBase64 String
   title       String
   ownerId     String   @db.ObjectId
+  pageId      String?  @db.ObjectId
+  page        Page?    @relation("PageQRCodes", fields: [pageId], references: [id])
   owner       User     @relation("UserQRCodes", fields: [ownerId], references: [id])
   createdAt   DateTime @default(now())
+}
+
+model Page {
+  id            String            @id @default(auto()) @map("_id") @db.ObjectId
+  openingHours  String
+  locationId    String?           @unique @db.ObjectId
+  location      Location?         @relation("PageLocation", fields: [locationId], references: [id])
+  backgroundUrl String
+  logoUrl       String
+  currency      String
+  defaultLangId String            @db.ObjectId
+  defaultLang   Language          @relation("PageLanguages", fields: [defaultLangId], references: [id])
+  translations  PageTranslation[] @relation("PageTranslations")
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  qrCodes       QRCode[]          @relation("PageQRCodes")
+}
+
+model Location {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  address   String
+  latitude  Float?
+  longitude Float?
+  googleUrl String?
+  page      Page?   @relation("PageLocation")
+}
+
+model Language {
+  id           String            @id @default(auto()) @map("_id") @db.ObjectId
+  code         String            @unique
+  name         String
+  nativeName   String
+  pages        Page[]            @relation("PageLanguages")
+  translations PageTranslation[] @relation("TranslationLanguages")
+}
+
+model PageTranslation {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  pageId      String   @db.ObjectId
+  page        Page     @relation("PageTranslations", fields: [pageId], references: [id])
+  langId      String   @db.ObjectId
+  lang        Language @relation("TranslationLanguages", fields: [langId], references: [id])
+  name        String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([pageId, langId])
 }
