@@ -1,12 +1,12 @@
 'use client';
 import { PageCard } from '@/feature';
+import { api } from '@/lib';
 import { Grid2, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 const Container = styled(Stack)({
-  height: '100%',
   overflowY: 'auto',
   padding: '24px',
   paddingTop: 0,
@@ -112,22 +112,21 @@ export const mockPages = [
 ];
 
 const PagesList: React.FC = () => {
+  const { data: pages } = api.pages.getAll.useQuery();
+  console.log(pages);
+
   return (
-    <Container
-      alignItems={'center'}
-      justifyContent={'flex-start'}
-      width={'100%'}
-    >
-      <ListContainer container justifyContent="space-between" spacing={2}>
-        {mockPages.map((el) => (
-          <PageCard
-            key={el.id}
-            id={el.id}
-            poster={el.poster}
-            description={el.description}
-            name={el.name}
-          />
-        ))}
+    <Container alignItems={'center'} justifyContent={'center'} width={'100%'}>
+      <ListContainer container spacing={2} sx={{ width: '100%' }}>
+        {pages &&
+          pages.map((el) => (
+            <PageCard
+              key={el.id}
+              id={el.id}
+              page={el}
+              poster={el.backgroundUrl}
+            />
+          ))}
       </ListContainer>
     </Container>
   );

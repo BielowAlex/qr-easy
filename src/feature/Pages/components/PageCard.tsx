@@ -1,6 +1,7 @@
 'use client';
 import { MenuPopover } from '@/components';
 import { DEFAULT_CARD_NO_IMAGE_URL } from '@/constants';
+import { IPage } from '@/types/pages-types';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import DisplaySettingsRoundedIcon from '@mui/icons-material/DisplaySettingsRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
@@ -26,14 +27,30 @@ const CardContainer = styled(Card)({
   marginBottom: 30,
 });
 
+const DescriptionText = styled(Typography)({
+  color: 'text.secondary',
+  display: '-webkit-box',
+  WebkitLineClamp: 3,
+  '-webkit-box-orient': 'vertical',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  wordBreak: 'break-word',
+});
+
 interface Props {
   id: string;
   poster: string | null;
-  name: string;
-  description: string;
+  page: IPage;
 }
-const PageCard: React.FC<Props> = ({ poster, name, description }) => {
+const PageCard: React.FC<Props> = ({
+  poster,
+  page: { translations, defaultLangId },
+}) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLButtonElement>(null);
+
+  const currentTranslate = translations.find(
+    (el) => el.langId === defaultLangId
+  )!;
 
   const handleOpenMenuPopover = (e: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(e.currentTarget);
@@ -51,7 +68,7 @@ const PageCard: React.FC<Props> = ({ poster, name, description }) => {
             component="img"
             height="150"
             image={poster || DEFAULT_CARD_NO_IMAGE_URL}
-            alt={name}
+            alt={currentTranslate.name}
           />
           <CardContent>
             <Stack
@@ -61,7 +78,7 @@ const PageCard: React.FC<Props> = ({ poster, name, description }) => {
               width={'100%'}
             >
               <Typography gutterBottom variant="h5" component="div">
-                {name}
+                {currentTranslate.name}
               </Typography>
               <IconButton onClick={handleOpenMenuPopover}>
                 <MoreVertRoundedIcon />
@@ -105,9 +122,9 @@ const PageCard: React.FC<Props> = ({ poster, name, description }) => {
                 </MenuItem>
               </MenuPopover>
             </Stack>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              {description}
-            </Typography>
+            <DescriptionText variant="body2">
+              {currentTranslate.description}
+            </DescriptionText>
           </CardContent>
         </Stack>
       </CardContainer>
