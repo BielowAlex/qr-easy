@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib';
-import { ICreateQrBody } from '@/types/qr-interface';
+import { ICreateQrBody } from '@/types/qr-types';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import {

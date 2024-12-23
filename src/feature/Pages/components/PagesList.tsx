@@ -30,8 +30,7 @@ export const mockPages = [
     id: uuidv4(),
     name: 'Whisky bar',
     description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
-    poster:
-      'https://restaumatic-blog-uploads.s3.amazonaws.com/uploads/2023/02/15-1024x768.png',
+    poster: null,
   },
   {
     id: uuidv4(),

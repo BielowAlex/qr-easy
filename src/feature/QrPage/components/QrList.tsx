@@ -2,7 +2,7 @@
 import { RemoveModal } from '@/components';
 import { QrCard } from '@/feature';
 import { api } from '@/lib';
-import { IQRCode } from '@/types/qr-interface';
+import { IQRCode } from '@/types/qr-types';
 import { Alert, Grid2, Snackbar, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import React, { useState } from 'react';

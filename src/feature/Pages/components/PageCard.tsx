@@ -1,5 +1,6 @@
 'use client';
 import { MenuPopover } from '@/components';
+import { DEFAULT_CARD_NO_IMAGE_URL } from '@/constants';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import DisplaySettingsRoundedIcon from '@mui/icons-material/DisplaySettingsRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
@@ -27,16 +28,14 @@ const CardContainer = styled(Card)({
 
 interface Props {
   id: string;
-  poster: string;
+  poster: string | null;
   name: string;
   description: string;
 }
 const PageCard: React.FC<Props> = ({ poster, name, description }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLButtonElement>(null);
 
-  const handleOpenMenuPopover = (
-    e: MouseEvent<HTMLAnchorElement> | MouseEvent<HTMLButtonElement>
-  ) => {
+  const handleOpenMenuPopover = (e: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(e.currentTarget);
   };
 
@@ -48,7 +47,12 @@ const PageCard: React.FC<Props> = ({ poster, name, description }) => {
     <Grid2 size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
       <CardContainer>
         <Stack sx={{ width: '100%' }}>
-          <CardMedia component="img" height="140" image={poster} alt={name} />
+          <CardMedia
+            component="img"
+            height="150"
+            image={poster || DEFAULT_CARD_NO_IMAGE_URL}
+            alt={name}
+          />
           <CardContent>
             <Stack
               direction={'row'}
