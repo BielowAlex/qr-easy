@@ -41,11 +41,11 @@ model QRCode {
 
 model Page {
   id            String            @id @default(auto()) @map("_id") @db.ObjectId
-  openingHours  String
+  openingHours  String?
   locationId    String?           @unique @db.ObjectId
   location      Location?         @relation("PageLocation", fields: [locationId], references: [id])
-  backgroundUrl String
-  logoUrl       String
+  backgroundUrl String?
+  logoUrl       String?
   currency      String
   defaultLangId String            @db.ObjectId
   defaultLang   Language          @relation("PageLanguages", fields: [defaultLangId], references: [id])
