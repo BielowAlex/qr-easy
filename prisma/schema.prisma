@@ -25,6 +25,7 @@ model User {
   isOnline   Boolean  @default(false)
   authUserId String?  @unique
   qrCodes    QRCode[] @relation("UserQRCodes")
+  pages      Page[]   @relation("UserPages")
 }
 
 model QRCode {
@@ -53,6 +54,8 @@ model Page {
   createdAt     DateTime          @default(now())
   updatedAt     DateTime          @updatedAt
   qrCodes       QRCode[]          @relation("PageQRCodes")
+  ownerId       String            @db.ObjectId
+  owner         User              @relation("UserPages", fields: [ownerId], references: [id])
 }
 
 model Location {

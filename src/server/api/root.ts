@@ -1,10 +1,10 @@
-import { userRouter } from '@/server/api/routers';
-import { qrCodeRouter } from '@/server/api/routers/qr-router';
+import { pageRouter, qrCodeRouter, userRouter } from '@/server/api/routers';
 import { createCallerFactory, createTrpcRouter } from '@/server/api/trpc';
 
 export const appRouter = createTrpcRouter({
   users: userRouter,
   qr: qrCodeRouter,
+  pages: pageRouter,
 });
 
 export type AppRouter = typeof appRouter;
