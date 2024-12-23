@@ -86,3 +86,12 @@ model PageTranslation {
 
   @@unique([pageId, langId])
 }
+
+model Event {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  type        String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "seed": "tsx prisma/seeds/index.ts",
     "lint": "next lint",
     "lint:styles": "stylelint '**/*.{css,scss}'"
   },
@@ -31,7 +32,7 @@
     "client-only": "^0.0.1",
     "lodash": "^4.17.21",
     "mongodb": "^6.10.0",
-    "next": "14.2.13",
+    "next": "14.3.0-canary.0",
     "next-auth": "^4.24.8",
     "normalize.css": "^8.0.1",
     "qrcode.react": "^4.2.0",
@@ -47,7 +48,7 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.17.13",
-    "@types/node": "^20",
+    "@types/node": "^20.17.10",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/uuid": "^10.0.0",
@@ -64,6 +65,8 @@
     "stylelint-config-standard": "^36.0.1",
     "stylelint-prettier": "^5.0.2",
     "stylelint-scss": "^6.7.0",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.2",
     "typescript": "^5"
   }
 }
