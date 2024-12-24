@@ -31,6 +31,7 @@ export const pageRouter = createTrpcRouter({
           defaultLang: true,
           location: true,
           owner: true,
+          qrCodes: true,
         },
       });
     } catch (e) {
@@ -42,7 +43,7 @@ export const pageRouter = createTrpcRouter({
     }
   }),
 
-  createPage: protectedProcedure
+  create: protectedProcedure
     .input(
       z.object({
         currency: z.string().min(1).max(3),
@@ -79,6 +80,7 @@ export const pageRouter = createTrpcRouter({
           data: {
             currency,
             defaultLangId: language.id,
+            ownerId: userId,
             translations: {
               create: {
                 langId: language.id,
@@ -90,6 +92,7 @@ export const pageRouter = createTrpcRouter({
           include: {
             translations: true,
             defaultLang: true,
+            owner: true,
           },
         });
       } catch (e) {
@@ -101,7 +104,7 @@ export const pageRouter = createTrpcRouter({
       }
     }),
 
-  deletePageById: protectedProcedure
+  deleteById: protectedProcedure
     .input(
       z.object({
         id: z.string(),

@@ -1,6 +1,6 @@
 'use client';
 import { PageCard } from '@/feature';
-import { api } from '@/lib';
+import { IPage } from '@/types/pages-types';
 import { Grid2, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import React from 'react';
@@ -26,104 +26,29 @@ export const mockPages = [
     poster:
       'https://restaumatic-blog-uploads.s3.amazonaws.com/uploads/2023/02/15-1024x768.png',
   },
-  {
-    id: uuidv4(),
-    name: 'Whisky bar',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
-    poster: null,
-  },
-  {
-    id: uuidv4(),
-    name: 'Whisky bar',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
-    poster:
-      'https://restaumatic-blog-uploads.s3.amazonaws.com/uploads/2023/02/15-1024x768.png',
-  },
-  {
-    id: uuidv4(),
-    name: 'Whisky bar',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
-    poster:
-      'https://restaumatic-blog-uploads.s3.amazonaws.com/uploads/2023/02/15-1024x768.png',
-  },
-  {
-    id: uuidv4(),
-    name: 'Whisky bar',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
-    poster:
-      'https://restaumatic-blog-uploads.s3.amazonaws.com/uploads/2023/02/15-1024x768.png',
-  },
-  {
-    id: uuidv4(),
-    name: 'Whisky bar',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
-    poster:
-      'https://restaumatic-blog-uploads.s3.amazonaws.com/uploads/2023/02/15-1024x768.png',
-  },
-  {
-    id: uuidv4(),
-    name: 'Whisky bar',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
-    poster:
-      'https://restaumatic-blog-uploads.s3.amazonaws.com/uploads/2023/02/15-1024x768.png',
-  },
-  {
-    id: uuidv4(),
-    name: 'Whisky bar',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
-    poster:
-      'https://restaumatic-blog-uploads.s3.amazonaws.com/uploads/2023/02/15-1024x768.png',
-  },
-  {
-    id: uuidv4(),
-    name: 'Whisky bar',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
-    poster:
-      'https://restaumatic-blog-uploads.s3.amazonaws.com/uploads/2023/02/15-1024x768.png',
-  },
-  {
-    id: uuidv4(),
-    name: 'Whisky bar',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
-    poster:
-      'https://restaumatic-blog-uploads.s3.amazonaws.com/uploads/2023/02/15-1024x768.png',
-  },
-  {
-    id: uuidv4(),
-    name: 'Whisky bar',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
-    poster:
-      'https://restaumatic-blog-uploads.s3.amazonaws.com/uploads/2023/02/15-1024x768.png',
-  },
-  {
-    id: uuidv4(),
-    name: 'Whisky bar',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
-    poster:
-      'https://restaumatic-blog-uploads.s3.amazonaws.com/uploads/2023/02/15-1024x768.png',
-  },
-  {
-    id: uuidv4(),
-    name: 'Whisky bar',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
-    poster:
-      'https://restaumatic-blog-uploads.s3.amazonaws.com/uploads/2023/02/15-1024x768.png',
-  },
 ];
 
-const PagesList: React.FC = () => {
-  const { data: pages } = api.pages.getAll.useQuery();
-  console.log(pages);
+interface Props {
+  pageList: IPage[];
+  refetchPageList: () => void;
+}
 
+const PagesList: React.FC<Props> = ({ pageList, refetchPageList }) => {
   return (
     <Container alignItems={'center'} justifyContent={'center'} width={'100%'}>
-      <ListContainer container spacing={2} sx={{ width: '100%' }}>
-        {pages &&
-          pages.map((el) => (
+      <ListContainer
+        container
+        spacing={2}
+        sx={{ width: '100%' }}
+        alignItems="stretch"
+      >
+        {pageList &&
+          pageList.map((el) => (
             <PageCard
               key={el.id}
               id={el.id}
               page={el}
+              refetchPageList={refetchPageList}
               poster={el.backgroundUrl}
             />
           ))}

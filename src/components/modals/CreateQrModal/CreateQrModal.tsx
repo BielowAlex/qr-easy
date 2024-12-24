@@ -1,12 +1,11 @@
 'use client';
+import { ModalHeader } from '@/components';
 import { api } from '@/lib';
 import { ICreateQrBody } from '@/types/qr-types';
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import {
   Alert,
   FormControl,
-  IconButton,
   Input,
   Modal,
   Snackbar,
@@ -14,7 +13,6 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import { QRCodeCanvas, QRCodeSVG } from 'qrcode.react';
@@ -26,7 +24,6 @@ const ModalContainer = styled(Modal)({
   alignItems: 'center',
   height: '100dvh',
   zIndex: 1600,
-  backgroundColor: 'rgba(0, 0, 0, 0.01)',
 });
 
 const Container = styled(Stack)(({ theme }) => ({
@@ -37,13 +34,6 @@ const Container = styled(Stack)(({ theme }) => ({
   gap: 32,
   width: '100%',
   maxWidth: 400,
-}));
-
-const IconContainer = styled(Box)(({ theme }) => ({
-  maxHeight: 52,
-  padding: '14px 14px',
-  background: theme.palette.grey['100'],
-  borderRadius: '50%',
 }));
 
 interface Props {
@@ -112,22 +102,10 @@ const CreateQrModal: React.FC<Props> = ({
       <ModalContainer open={isModalOpen}>
         <Container>
           <Stack width={'100%'} gap={24}>
-            <Stack
-              direction={'row'}
-              justifyContent={'space-between'}
-              width={'100%'}
-              sx={{ zIndex: 10 }}
-            >
-              <IconContainer>
-                <QrCodeScannerIcon />
-              </IconContainer>
-              <IconButton
-                onClick={handleCancel}
-                sx={{ padding: 5, width: 34, height: 34 }}
-              >
-                <CloseRoundedIcon sx={{ fontSize: '24px' }} />
-              </IconButton>
-            </Stack>
+            <ModalHeader
+              icon={<QrCodeScannerIcon />}
+              handleCancel={handleCancel}
+            />
             <Stack gap={4}>
               <Typography variant={'h3'}>Create linked QR</Typography>
               <Typography variant={'subtitle2'} color={palette.grey['500']}>

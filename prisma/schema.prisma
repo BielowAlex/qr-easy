@@ -44,7 +44,7 @@ model Page {
   id            String            @id @default(auto()) @map("_id") @db.ObjectId
   openingHours  String?
   locationId    String?           @unique @db.ObjectId
-  location      Location?         @relation("PageLocation", fields: [locationId], references: [id])
+  location      Location?         @relation("PageLocation", fields: [locationId], references: [id], onDelete: Cascade)
   backgroundUrl String?
   logoUrl       String?
   currency      String
@@ -79,7 +79,7 @@ model Language {
 model PageTranslation {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   pageId      String   @db.ObjectId
-  page        Page     @relation("PageTranslations", fields: [pageId], references: [id])
+  page        Page     @relation("PageTranslations", fields: [pageId], references: [id], onDelete: Cascade)
   langId      String   @db.ObjectId
   lang        Language @relation("TranslationLanguages", fields: [langId], references: [id])
   name        String

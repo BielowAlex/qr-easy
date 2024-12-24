@@ -1,10 +1,10 @@
 export interface IPage {
   id: string;
-  openingHours: string;
+  openingHours: string | null;
   locationId?: string | null;
   location?: ILocation | null;
-  backgroundUrl: string;
-  logoUrl: string;
+  backgroundUrl: string | null;
+  logoUrl: string | null;
   currency: string;
   defaultLangId: string;
   defaultLang: ILanguage;
