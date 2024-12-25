@@ -1,6 +1,6 @@
 'use client';
 import { PageCard } from '@/feature';
-import { IPage } from '@/types/pages-types';
+import { IPage } from '@/types';
 import { Grid2, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import React from 'react';

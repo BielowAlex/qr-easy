@@ -26,7 +26,7 @@ interface IThemeContext {
 // Key for saving theme mode in local storage
 const THEME_MODE_KEY = 'theme-mode';
 
-// Zustand store for managing theme mode
+// Zustand stores for managing theme mode
 const useThemeStore = create(
   persist<{
     mode: ThemeMode;

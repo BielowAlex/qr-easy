@@ -2,14 +2,14 @@ import { getServerAuthSession } from '@/app/api/auth/[...nextauth]/options';
 import { db } from '@/lib/db';
 import type { AppRouter } from '@/server/api/root';
 import { inferRouterOutputs, initTRPC, TRPCError } from '@trpc/server';
-import { type CreateNextContextOptions } from '@trpc/server/adapters/next';
+import { NextApiRequest, NextApiResponse } from 'next';
 import { DefaultSession, Session } from 'next-auth';
 import superjson from 'superjson';
 import { ZodError } from 'zod';
 
 export type AppUserSession = Session & {
   user: DefaultSession['user'] & {
-    id: number;
+    id: string;
   };
 };
 
@@ -50,16 +50,19 @@ const createInnerTRPCContext = (
  *
  * @see https://trpc.io/docs/context
  */
-export const createTRPCContext = async (
-  opts: CreateNextContextOptions
-): Promise<InnerTRPCContext> => {
-  const { req, res } = opts;
+export const createTRPCContext = async (opts: {
+  req?: NextApiRequest;
+  res?: NextApiResponse;
+  session?: AppUserSession | null;
+}): Promise<InnerTRPCContext> => {
+  const { req, res, session } = opts;
 
   // Get the session from the server using the getServerSession wrapper function
-  const session = (await getServerAuthSession(req, res)) as AppUserSession;
+  const currentSession =
+    session || ((await getServerAuthSession(req!, res!)) as AppUserSession);
 
   return createInnerTRPCContext({
-    session,
+    session: currentSession,
   });
 };
 

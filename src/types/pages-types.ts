@@ -1,3 +1,5 @@
+import { IQRCode } from '@/types/qr-types';
+
 export interface IPage {
   id: string;
   openingHours: string | null;
@@ -37,14 +39,4 @@ export interface IPageTranslation {
   description: string;
   createdAt: Date;
   updatedAt: Date;
-}
-
-export interface IQRCode {
-  id: string;
-  value: string;
-  imageBase64: string;
-  title: string;
-  ownerId: string;
-  pageId?: string | null;
-  createdAt: Date;
 }

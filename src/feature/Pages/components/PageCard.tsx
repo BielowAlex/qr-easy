@@ -2,7 +2,7 @@
 import { MenuPopover } from '@/components';
 import { DEFAULT_CARD_NO_IMAGE_URL } from '@/constants';
 import { api } from '@/lib';
-import { IPage } from '@/types/pages-types';
+import { IPage } from '@/types';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import DisplaySettingsRoundedIcon from '@mui/icons-material/DisplaySettingsRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
@@ -20,6 +20,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { useRouter } from 'next/navigation';
 import React, { MouseEvent, useState } from 'react';
 
 const CardContainer = styled(Card)({
@@ -60,6 +61,8 @@ const PageCard: React.FC<Props> = ({
   page: { translations, defaultLangId },
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLButtonElement>(null);
+
+  const router = useRouter();
   const { palette } = useTheme();
 
   const currentTranslate = translations.find(
@@ -73,7 +76,12 @@ const PageCard: React.FC<Props> = ({
   };
 
   const handleOpenPage = () => {};
-  const handleOpenAdminPanel = () => {};
+
+  const handleOpenAdminPanel = () => {
+    console.log('work');
+    router.push(`/profile/pages/${id}`);
+  };
+
   const handleDeletePage = async () => {
     try {
       await deletePageById({

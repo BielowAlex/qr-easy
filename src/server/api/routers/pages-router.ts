@@ -42,6 +42,59 @@ export const pageRouter = createTrpcRouter({
       });
     }
   }),
+  getById: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const userId = ctx.session?.user?.id;
+      const { id } = input;
+
+      if (!userId) {
+        throw new TRPCError({
+          code: TRPC_ERROR_CODES.UNAUTHORIZED,
+          message: 'User not authenticated',
+        });
+      }
+
+      const currentPage = await ctx.db.page
+        .findFirst({
+          where: {
+            ownerId: userId,
+            id,
+          },
+          include: {
+            translations: {
+              include: {
+                lang: true,
+              },
+            },
+            defaultLang: true,
+            location: true,
+            owner: true,
+            qrCodes: true,
+          },
+        })
+        .catch((e) => {
+          console.error(e);
+          throw new TRPCError({
+            code: TRPC_ERROR_CODES.INTERNAL_SERVER_ERROR,
+            message: 'Failed to retrieve pages',
+          });
+        });
+
+      if (!currentPage) {
+        console.log('currentPage', currentPage);
+        throw new TRPCError({
+          code: TRPC_ERROR_CODES.NOT_FOUND,
+          message: 'Page not found',
+        });
+      }
+
+      return currentPage;
+    }),
 
   create: protectedProcedure
     .input(
