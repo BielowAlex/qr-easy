@@ -3,11 +3,9 @@ import { IQRCode } from '@/types/qr-types';
 export interface IPage {
   id: string;
   openingHours: string | null;
-  locationId?: string | null;
   location?: ILocation | null;
   backgroundUrl: string | null;
   logoUrl: string | null;
-  currency: string;
   defaultLangId: string;
   defaultLang: ILanguage;
   translations: IPageTranslation[];
@@ -18,7 +16,8 @@ export interface IPage {
 
 export interface ILocation {
   id: string;
-  address: string;
+  country: string;
+  address?: string | null;
   latitude?: number | null;
   longitude?: number | null;
   googleUrl?: string | null;
@@ -36,6 +35,7 @@ export interface IPageTranslation {
   pageId: string;
   langId: string;
   name: string;
+  currency: string;
   description: string;
   createdAt: Date;
   updatedAt: Date;

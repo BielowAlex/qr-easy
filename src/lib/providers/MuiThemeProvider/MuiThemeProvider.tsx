@@ -7,7 +7,7 @@ import {
 } from '@/styles';
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider as MUIThemeProvider } from '@mui/material/styles';
-import React, { createContext, useContext, useMemo } from 'react';
+import React, { createContext, useContext } from 'react';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -60,17 +60,14 @@ export const MuiThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   const { mode, toggleTheme } = useThemeStore();
 
   // Compute theme based on the current mode
-  const theme = useMemo(
-    () =>
-      mode === ThemeMode.DARK
-        ? createDarkTheme(commonThemeOptions)
-        : createLightTheme(commonThemeOptions),
-    [mode]
-  );
 
+  const mergedTheme =
+    mode === ThemeMode.DARK
+      ? createDarkTheme(commonThemeOptions)
+      : createLightTheme(commonThemeOptions);
   return (
     <ThemeContext.Provider value={{ toggleTheme, currentTheme: mode }}>
-      <MUIThemeProvider theme={theme}>
+      <MUIThemeProvider theme={mergedTheme}>
         {/* CssBaseline provides global styles */}
         <CssBaseline />
         {children}

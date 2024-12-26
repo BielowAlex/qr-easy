@@ -43,11 +43,12 @@ model QRCode {
 model Page {
   id            String            @id @default(auto()) @map("_id") @db.ObjectId
   openingHours  String?
-  locationId    String?           @unique @db.ObjectId
-  location      Location?         @relation("PageLocation", fields: [locationId], references: [id], onDelete: Cascade)
+  location      Location?         @relation("PageLocation")
   backgroundUrl String?
+  pathname      String
+  name          String
+  description   String
   logoUrl       String?
-  currency      String
   defaultLangId String            @db.ObjectId
   defaultLang   Language          @relation("PageLanguages", fields: [defaultLangId], references: [id])
   translations  PageTranslation[] @relation("PageTranslations")
@@ -60,11 +61,13 @@ model Page {
 
 model Location {
   id        String  @id @default(auto()) @map("_id") @db.ObjectId
-  address   String
+  country   String
+  address   String?
   latitude  Float?
   longitude Float?
   googleUrl String?
-  page      Page?   @relation("PageLocation")
+  pageId    String? @unique @db.ObjectId
+  page      Page?   @relation("PageLocation", fields: [pageId], references: [id], onDelete: Cascade)
 }
 
 model Language {
@@ -84,6 +87,7 @@ model PageTranslation {
   lang        Language @relation("TranslationLanguages", fields: [langId], references: [id])
   name        String
   description String
+  currency    String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

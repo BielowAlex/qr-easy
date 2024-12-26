@@ -101,8 +101,11 @@ export const pageRouter = createTrpcRouter({
       z.object({
         currency: z.string().min(1).max(3),
         langCode: z.string().min(2).max(5),
-        name: z.string().min(1).max(255),
-        description: z.string().optional(),
+        name: z.string().min(1).max(38),
+        description: z.string().min(1).max(255),
+        brandName: z.string().min(1).max(38),
+        brandDescription: z.string().min(1).max(255),
+        country: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -115,9 +118,16 @@ export const pageRouter = createTrpcRouter({
         });
       }
 
-      const { currency, langCode, name, description } = input;
+      const {
+        currency,
+        langCode,
+        name,
+        description,
+        brandName,
+        brandDescription,
+      } = input;
 
-      const language = await ctx.db.language.findUnique({
+      const language = await ctx.db.language.findFirst({
         where: { code: langCode },
       });
 
@@ -128,26 +138,56 @@ export const pageRouter = createTrpcRouter({
         });
       }
 
+      const isExist = await ctx.db.page.count({
+        where: {
+          name: brandName,
+        },
+      });
+
+      if (isExist) {
+        throw new TRPCError({
+          code: TRPC_ERROR_CODES.BAD_REQUEST,
+          message: `Page with same brand Name already exist.`,
+        });
+      }
+
+      const pathname = brandName.toLowerCase().replace(' ', '-');
+
       try {
-        return await ctx.db.page.create({
+        const newPage = await ctx.db.page.create({
           data: {
-            currency,
+            name: brandName,
+            pathname,
+            description: brandDescription,
             defaultLangId: language.id,
             ownerId: userId,
             translations: {
               create: {
                 langId: language.id,
                 name,
+                currency,
                 description: description || '',
               },
             },
           },
           include: {
             translations: true,
+            location: true,
             defaultLang: true,
             owner: true,
           },
         });
+
+        if (input.country) {
+          await ctx.db.location.create({
+            data: {
+              country: input.country,
+              pageId: newPage.id,
+            },
+          });
+        }
+
+        return newPage;
       } catch (e) {
         console.error(e);
         throw new TRPCError({
