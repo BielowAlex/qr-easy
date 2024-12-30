@@ -25,7 +25,6 @@ const PagePanelHeader: React.FC = () => {
 
   const path = usePathname();
 
-  console.log(path);
   const { palette } = useTheme();
 
   if (!currentPage) {
@@ -55,7 +54,7 @@ const PagePanelHeader: React.FC = () => {
       </Stack>
 
       <Stack direction={'row'} gap={12}>
-        <LinkButton href={`${path}`}>Open page</LinkButton>
+        <LinkButton href={`/${currentPage.pathname}`}>Open page</LinkButton>
         <LinkButton href={`${path}/products`}>Product list</LinkButton>
         <LinkButton href={'/profile/pages'}>Back to list</LinkButton>
       </Stack>

@@ -58,7 +58,7 @@ const PageCard: React.FC<Props> = ({
   id,
   poster,
   refetchPageList,
-  page: { translations, defaultLangId },
+  page: { translations, defaultLangId, pathname },
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLButtonElement>(null);
 
@@ -75,10 +75,11 @@ const PageCard: React.FC<Props> = ({
     setAnchorEl(e.currentTarget);
   };
 
-  const handleOpenPage = () => {};
+  const handleOpenPage = () => {
+    router.push(`/${pathname}?id=${id}`);
+  };
 
   const handleOpenAdminPanel = () => {
-    console.log('work');
     router.push(`/profile/pages/${id}`);
   };
 

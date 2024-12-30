@@ -3,6 +3,7 @@ import {
   protectedProcedure,
   TRPC_ERROR_CODES,
 } from '@/server/api/trpc';
+import { pageSchema } from '@/types';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
@@ -95,7 +96,60 @@ export const pageRouter = createTrpcRouter({
 
       return currentPage;
     }),
+  getByPathname: protectedProcedure
+    .input(
+      z.object({
+        pathname: z.string(),
+      })
+    )
+    .output(pageSchema)
+    .query(async ({ ctx, input }) => {
+      const userId = ctx.session?.user?.id;
+      const { pathname } = input;
 
+      if (!userId) {
+        throw new TRPCError({
+          code: TRPC_ERROR_CODES.UNAUTHORIZED,
+          message: 'User not authenticated',
+        });
+      }
+
+      const currentPage = await ctx.db.page
+        .findFirst({
+          where: {
+            ownerId: userId,
+            pathname,
+          },
+          include: {
+            translations: {
+              include: {
+                lang: true,
+              },
+            },
+            defaultLang: true,
+            location: true,
+            owner: true,
+            qrCodes: true,
+          },
+        })
+        .catch((e) => {
+          console.error(e);
+          throw new TRPCError({
+            code: TRPC_ERROR_CODES.INTERNAL_SERVER_ERROR,
+            message: 'Failed to retrieve pages',
+          });
+        });
+
+      if (!currentPage) {
+        console.log('currentPage', currentPage);
+        throw new TRPCError({
+          code: TRPC_ERROR_CODES.NOT_FOUND,
+          message: 'Page not found',
+        });
+      }
+
+      return currentPage;
+    }),
   create: protectedProcedure
     .input(
       z.object({
@@ -235,6 +289,116 @@ export const pageRouter = createTrpcRouter({
         throw new TRPCError({
           code: TRPC_ERROR_CODES.INTERNAL_SERVER_ERROR,
           message: 'Failed to delete page',
+        });
+      }
+    }),
+  isPathnameExist: protectedProcedure
+    .input(
+      z.object({
+        pathname: z.string(),
+      })
+    )
+    .output(z.boolean())
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session?.user?.id;
+      const { pathname } = input;
+
+      if (!userId) {
+        throw new TRPCError({
+          code: TRPC_ERROR_CODES.UNAUTHORIZED,
+          message: 'User not authenticated',
+        });
+      }
+
+      const currentPage = await ctx.db.page
+        .count({
+          where: {
+            pathname,
+          },
+        })
+        .catch((e) => {
+          console.error(e);
+          throw new TRPCError({
+            code: TRPC_ERROR_CODES.INTERNAL_SERVER_ERROR,
+            message: 'Failed to retrieve pages',
+          });
+        });
+
+      return !!currentPage;
+    }),
+  updateById: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        name: z.string().optional(),
+        pathname: z.string().optional(),
+        backgroundUrl: z.string().nullable().optional(),
+        logoUrl: z.string().nullable().optional(),
+        description: z.string().optional(),
+        defaultLangId: z.string().optional(),
+        currency: z.string().optional(),
+        langCode: z.string().optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session?.user?.id;
+
+      if (!userId) {
+        throw new TRPCError({
+          code: TRPC_ERROR_CODES.UNAUTHORIZED,
+          message: 'User not authenticated',
+        });
+      }
+
+      const { id, ...fieldsToUpdate } = input;
+
+      const existingPage = await ctx.db.page.findFirst({
+        where: { id, ownerId: userId },
+      });
+
+      if (!existingPage) {
+        throw new TRPCError({
+          code: TRPC_ERROR_CODES.NOT_FOUND,
+          message: 'Page not found',
+        });
+      }
+
+      if (fieldsToUpdate?.pathname) {
+        const isPathnameExist = await ctx.db.page.count({
+          where: {
+            pathname: fieldsToUpdate.pathname,
+            NOT: { id },
+          },
+        });
+
+        if (isPathnameExist) {
+          throw new TRPCError({
+            code: TRPC_ERROR_CODES.BAD_REQUEST,
+            message: `Pathname "${fieldsToUpdate.pathname}" already exists.`,
+          });
+        }
+      }
+
+      try {
+        return await ctx.db.page.update({
+          where: { id },
+          data: fieldsToUpdate,
+          include: {
+            translations: {
+              include: {
+                lang: true,
+              },
+            },
+            defaultLang: true,
+            location: true,
+            owner: true,
+          },
+        });
+      } catch (e) {
+        console.error(e);
+        throw new TRPCError({
+          code: TRPC_ERROR_CODES.INTERNAL_SERVER_ERROR,
+          message: 'Failed to update page',
         });
       }
     }),

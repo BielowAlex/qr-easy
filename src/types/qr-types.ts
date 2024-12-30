@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 export interface IQRCode {
   id: string;
   value: string;
@@ -12,3 +14,13 @@ export interface ICreateQrBody {
   value: string;
   imageBase64: string;
 }
+
+export const qrCodeSchema = z.object({
+  id: z.string(),
+  value: z.string(),
+  imageBase64: z.string(),
+  title: z.string(),
+  ownerId: z.string(),
+  pageId: z.string().nullable(),
+  createdAt: z.date(),
+});

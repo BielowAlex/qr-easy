@@ -223,7 +223,6 @@ const CreatePageModal: React.FC<Props> = ({
                   Default Language
                 </StyledInputLabel>
                 <Select
-                  labelId="demo-simple-select-standard-label"
                   value={currentLanguage}
                   onChange={handleLanguageChange}
                   label={'Language'}

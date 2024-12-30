@@ -4,11 +4,11 @@ export const commonThemeOptions: ThemeOptions = {
   breakpoints: {
     keys: ['xs', 'sm', 'md', 'lg', 'xl'],
     values: {
-      xs: 450,
-      sm: 600,
-      md: 900,
-      lg: 1310,
-      xl: 1536,
+      xs: 0,
+      sm: 640,
+      md: 960,
+      lg: 1280,
+      xl: 1600,
     },
     unit: 'px',
   },

@@ -4,21 +4,8 @@ import {
   protectedProcedure,
   TRPC_ERROR_CODES,
 } from '@/server/api/trpc';
+import { userOutputSchema } from '@/types';
 import { TRPCError } from '@trpc/server';
-import { z } from 'zod';
-
-const userOutputSchema = z.object({
-  id: z.string(),
-  email: z.string().email(),
-  nickname: z.string(),
-  firstName: z.string(),
-  lastName: z.string(),
-  avatar: z.string().url(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-  isOnline: z.boolean(),
-  authUserId: z.string().nullable(),
-});
 
 export const userRouter = createTrpcRouter({
   getUserById: protectedProcedure

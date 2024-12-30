@@ -10,6 +10,7 @@ const Logo: React.FC = () => {
     <Link
       href={'/'}
       style={{
+        width: 'fit-content',
         textDecoration: 'none',
         display: 'flex',
         alignItems: 'center',
