@@ -1,3 +1,6 @@
+'use client';
+import { FileDropzone } from '@/components/ui/FileDropzone';
+import { BASE_URL } from '@/constants';
 import { usePagePanelStore } from '@/feature';
 import { PagePanelFormHeader } from '@/feature/PagePanel/components/PagePanelFormHeader';
 import { api } from '@/lib';
@@ -11,10 +14,8 @@ import {
 } from '@mui/material';
 import React, { ChangeEvent } from 'react';
 
-const BaseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-
 const BasicInfoForm: React.FC = () => {
-  const { setDraftData, draftData, setIsDraftChanged } = usePagePanelStore();
+  const { setDraftData, draftData, saveDraftChange } = usePagePanelStore();
 
   const { mutateAsync: updatePageById } = api.pages.updateById.useMutation();
   const { palette } = useTheme();
@@ -29,6 +30,20 @@ const BasicInfoForm: React.FC = () => {
     setDraftData({ ...draftData, pathname: value });
   };
 
+  const handleDrop = (acceptedFiles: File[]) => {
+    if (!draftData) return;
+
+    if (acceptedFiles.length === 1) {
+      const file = acceptedFiles[0];
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setDraftData({ ...draftData, favicon: reader.result as string });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   if (!draftData) {
     return null;
   }
@@ -37,7 +52,7 @@ const BasicInfoForm: React.FC = () => {
       const isUpdated = await updatePageById({ ...draftData });
 
       if (isUpdated) {
-        setIsDraftChanged(false);
+        saveDraftChange();
         console.log('success');
       }
     } catch (e) {
@@ -73,14 +88,14 @@ const BasicInfoForm: React.FC = () => {
             input: {
               startAdornment: (
                 <InputAdornment position="start" sx={{ margin: 0 }}>
-                  {BaseUrl}/
+                  {BASE_URL}/
                 </InputAdornment>
               ),
             },
           }}
         />
         <TextField
-          label="Page description"
+          label="Page description(SEO, Social Media)"
           value={draftData?.description}
           onChange={(e) =>
             setDraftData({
@@ -104,6 +119,14 @@ const BasicInfoForm: React.FC = () => {
               ),
             },
           }}
+        />
+        <FileDropzone
+          acceptedFileTypesStr={'ICO'}
+          maxSize={5}
+          accept={{
+            'image/x-icon': [],
+          }}
+          onDrop={handleDrop}
         />
       </Stack>
     </Stack>

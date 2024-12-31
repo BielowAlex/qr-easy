@@ -45,3 +45,45 @@ export default async function CurrentPage({
     notFound();
   }
 }
+
+export const generateMetadata = async ({
+  params,
+}: {
+  params: { pathname: string };
+}) => {
+  const pathname = params.pathname;
+
+  const session = await getServerAuthSession();
+  const ssg = createServerSideHelpers({
+    router: appRouter,
+    ctx: await createTRPCContext({
+      req: undefined,
+      res: undefined,
+      session,
+    }),
+    transformer: superjson,
+  });
+
+  try {
+    const page = await ssg.pages.getByPathname.fetch({ pathname });
+
+    if (page) {
+      return {
+        title: page.name || 'QrEASY',
+        description: page.description || 'Default description for this page.',
+        icons: {
+          icon: page?.favicon || '/favicon.ico',
+        },
+      };
+    }
+  } catch (error) {
+    console.error(error);
+    return {
+      title: 'Error',
+      description: 'An error occurred while loading the page.',
+      icons: {
+        icon: '/default-favicon.ico',
+      },
+    };
+  }
+};

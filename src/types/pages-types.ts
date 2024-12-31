@@ -10,6 +10,7 @@ export interface IPage {
   location?: ILocation | null;
   backgroundUrl: string | null;
   logoUrl: string | null;
+  favicon: string | null;
   defaultLangId: string;
   pathname: string;
   defaultLang: ILanguage;
@@ -85,6 +86,7 @@ export const pageSchema = z.object({
   openingHours: z.string().nullable(),
   location: locationSchema.nullable(),
   backgroundUrl: z.string().nullable(),
+  favicon: z.string().nullable(),
   pathname: z.string(),
   name: z.string(),
   description: z.string(),

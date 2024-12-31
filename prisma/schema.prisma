@@ -47,6 +47,7 @@ model Page {
   backgroundUrl String?
   pathname      String
   name          String
+  favicon       String?
   description   String
   logoUrl       String?
   defaultLangId String            @db.ObjectId

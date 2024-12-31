@@ -37,6 +37,8 @@ const Description = styled(Typography)({
 
 const LogoContainer = styled(Box)({
   display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
   width: '42px',
   height: '42px',
   border: '1px solid #E9EAEB',

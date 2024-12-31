@@ -9,6 +9,7 @@ interface IState {
   setDraftData: (draftData: IPage | null) => void;
   setIsDraftChanged: (isDraftChanged: boolean) => void;
   resetDraftData: () => void;
+  saveDraftChange: () => void;
 }
 
 export const usePagePanelStore = create<IState>((set, get) => ({
@@ -26,6 +27,11 @@ export const usePagePanelStore = create<IState>((set, get) => ({
     set({
       isDraftChanged: JSON.stringify(currentPage) !== JSON.stringify(draftData),
     });
+  },
+  saveDraftChange: () => {
+    const { draftData } = get();
+
+    set({ currentPage: draftData, isDraftChanged: false });
   },
   setIsDraftChanged: (isDraftChanged) => set({ isDraftChanged }),
   resetDraftData: () => {

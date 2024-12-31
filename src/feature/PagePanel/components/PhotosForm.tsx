@@ -1,59 +1,15 @@
 'use client';
-import { FileDropzone } from '@/components/ui/FileDropzone';
-import { usePagePanelStore } from '@/feature';
+import { PhotosDropzone, usePagePanelStore } from '@/feature';
 import { PagePanelFormHeader } from '@/feature/PagePanel/components/PagePanelFormHeader';
 import { api } from '@/lib';
-import { Avatar, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-
-interface DropzoneProps {
-  photo: string | null;
-  setPhoto: (url: string) => void;
-}
-
-const Dropzone: React.FC<DropzoneProps> = ({ photo, setPhoto }) => {
-  const handleDrop = (acceptedFiles: File[]) => {
-    if (acceptedFiles.length === 1) {
-      const file = acceptedFiles[0];
-
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPhoto(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  return (
-    <Stack
-      direction="row"
-      alignItems="center"
-      justifyContent={'center'}
-      spacing={2}
-    >
-      <FileDropzone
-        acceptedFileTypesStr={'(JPG, PNG, SVG)'}
-        maxSize={20}
-        accept={{
-          'image/*': [],
-          'image/svg+xml': [],
-        }}
-        onDrop={handleDrop}
-      />
-      <Avatar
-        alt={'loaded photo '}
-        src={photo ? photo : undefined}
-        sx={{ width: 200, height: 200 }}
-      />
-    </Stack>
-  );
-};
 
 const PhotosForm: React.FC = () => {
   const [logo, setLogo] = useState<string | null>(null);
   const [banner, setBanner] = useState<string | null>(null);
 
-  const { draftData, setDraftData, setIsDraftChanged } = usePagePanelStore();
+  const { draftData, setDraftData, saveDraftChange } = usePagePanelStore();
 
   const { mutateAsync: updatePageById } = api.pages.updateById.useMutation();
   // const { palette } = useTheme();
@@ -87,7 +43,7 @@ const PhotosForm: React.FC = () => {
       const isUpdated = await updatePageById({ ...draftData });
 
       if (isUpdated) {
-        setIsDraftChanged(false);
+        saveDraftChange();
         console.log('success');
       }
     } catch (e) {
@@ -104,13 +60,18 @@ const PhotosForm: React.FC = () => {
 
   return (
     <Stack>
-      <PagePanelFormHeader title={'Photos'} onSave={handleSavePage} />
-      <Stack spacing={4} padding={10}>
-        <Typography variant="h6">Logo</Typography>
-        <Dropzone photo={logo} setPhoto={handleLogoChange} />
-
-        <Typography variant="h6">Poster</Typography>
-        <Dropzone photo={banner} setPhoto={handleBannerChange} />
+      <PagePanelFormHeader
+        title={'Photos'}
+        onSave={handleSavePage}
+        description={
+          "Here you can update your brand's images, such as the logo and the main banner of your website, and instantly see the result (for PC users)."
+        }
+      />
+      <Stack gap={10} padding={10}>
+        <Typography variant="h6">Brand Logo</Typography>
+        <PhotosDropzone photo={logo} setPhoto={handleLogoChange} />
+        <Typography variant="h6">Main Banner</Typography>
+        <PhotosDropzone photo={banner} setPhoto={handleBannerChange} />
       </Stack>
     </Stack>
   );

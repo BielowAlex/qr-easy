@@ -90,7 +90,7 @@ export const pageRouter = createTrpcRouter({
         console.log('currentPage', currentPage);
         throw new TRPCError({
           code: TRPC_ERROR_CODES.NOT_FOUND,
-          message: 'Page not found',
+          message: 'MyPage not found',
         });
       }
 
@@ -144,7 +144,7 @@ export const pageRouter = createTrpcRouter({
         console.log('currentPage', currentPage);
         throw new TRPCError({
           code: TRPC_ERROR_CODES.NOT_FOUND,
-          message: 'Page not found',
+          message: 'MyPage not found',
         });
       }
 
@@ -274,7 +274,7 @@ export const pageRouter = createTrpcRouter({
       if (!page) {
         throw new TRPCError({
           code: TRPC_ERROR_CODES.NOT_FOUND,
-          message: 'Page not found',
+          message: 'MyPage not found',
         });
       }
 
@@ -283,7 +283,7 @@ export const pageRouter = createTrpcRouter({
           where: { id: input.id },
         });
 
-        return { success: true, message: 'Page deleted successfully' };
+        return { success: true, message: 'MyPage deleted successfully' };
       } catch (e) {
         console.error(e);
         throw new TRPCError({
@@ -334,6 +334,7 @@ export const pageRouter = createTrpcRouter({
         pathname: z.string().optional(),
         backgroundUrl: z.string().nullable().optional(),
         logoUrl: z.string().nullable().optional(),
+        favicon: z.string().nullable().optional(),
         description: z.string().optional(),
         defaultLangId: z.string().optional(),
         currency: z.string().optional(),
@@ -359,7 +360,7 @@ export const pageRouter = createTrpcRouter({
       if (!existingPage) {
         throw new TRPCError({
           code: TRPC_ERROR_CODES.NOT_FOUND,
-          message: 'Page not found',
+          message: 'MyPage not found',
         });
       }
 
