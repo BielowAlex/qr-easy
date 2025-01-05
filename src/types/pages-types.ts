@@ -66,6 +66,7 @@ export interface IPageTranslation {
 
 export enum PagePanelTabsEnum {
   BASIC_INFO = 'BASIC_INFO',
+  LOCATION = 'LOCATION',
   PHOTOS = 'PHOTOS',
   DESCRIPTION = 'DESCRIPTION',
 }

@@ -1,3 +1,4 @@
+'use client';
 import Logo from '@/assets/favicon.ico';
 import { BASE_URL } from '@/constants';
 import { usePagePanelStore } from '@/feature';
