@@ -23,7 +23,7 @@ const PhoneDisplayContainer = styled(Stack)({
   zIndex: 5,
   overflowY: 'auto',
   borderRadius: 18,
-  padding: '3px 13px',
+  padding: '0 13px',
   paddingRight: 0,
   scrollbarWidth: 'thin',
 });

@@ -1,11 +1,12 @@
 'use client';
-import { IPage, IPageTranslation } from '@/types';
+import { PageInfoBlock } from '@/feature';
+import { IPage } from '@/types';
 import FmdGoodOutlinedIcon from '@mui/icons-material/FmdGoodOutlined';
 import QueryBuilderRoundedIcon from '@mui/icons-material/QueryBuilderRounded';
 import WifiPasswordRoundedIcon from '@mui/icons-material/WifiPasswordRounded';
-import { Stack, Typography, useTheme } from '@mui/material';
-import Button from '@mui/material/Button';
-import React, { useState } from 'react';
+import { Divider, Stack, Typography, useTheme } from '@mui/material';
+import Link from 'next/link';
+import React from 'react';
 
 interface Props {
   page: IPage;
@@ -14,119 +15,138 @@ interface Props {
 
 const PageAbout: React.FC<Props> = ({
   isMobile,
-  page: { name, location, openingHours, pathname, translations, defaultLangId },
+  page: { name, location, openingHours, pathname },
 }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const currentTranslate: IPageTranslation = translations.find(
-    (el) => el.langId === defaultLangId
-  )!;
+  const currentLocationText = location
+    ? `${location.address}, ${location?.city}, ${location?.country}`
+    : undefined;
 
   const { palette } = useTheme();
 
-  const handleToggle = () => {
-    setIsExpanded(!isExpanded);
-  };
-
-  const displayText = isExpanded
-    ? currentTranslate.description
-    : `${currentTranslate.description.slice(0, 250)}`;
-
   return (
-    <Stack padding={16} gap={4}>
+    <Stack
+      justifyContent={'flex-start'}
+      sx={{
+        width: '100%',
+        minHeight: 'fit-content',
+        overflow: 'hidden',
+      }}
+    >
       <Stack
-        direction={isMobile ? 'column' : 'row'}
-        alignItems={isMobile ? 'flex-start' : 'center'}
+        alignItems={'flex-start'}
         justifyContent={'space-between'}
+        width={'100%'}
+        padding={10}
+        sx={{
+          background: palette.common.black,
+        }}
       >
         <Typography
           variant={'h2'}
-          fontSize={'3.3rem'}
-          fontWeight={400}
+          fontSize={28}
+          fontWeight={700}
+          color={palette.primary.contrastText}
           sx={{ wordBreak: 'break-all' }}
         >
           {name}
         </Typography>
-        <Stack gap={4}>
-          {location && (
-            <Stack direction={'row'} alignItems={'center'} gap={8}>
-              <FmdGoodOutlinedIcon
-                sx={{ color: palette.grey[500] }}
-                fontSize={'small'}
-              />
-
-              <Typography
-                variant={'subtitle2'}
-                fontWeight={500}
-                sx={{
-                  color: palette.grey[500],
-                }}
-              >
-                {location?.country} - New york - Brodway 13B
-              </Typography>
-            </Stack>
-          )}
-          {openingHours && (
-            <Stack direction={'row'} alignItems={'center'} gap={8}>
-              <QueryBuilderRoundedIcon
-                sx={{ color: palette.grey[500] }}
-                fontSize={'small'}
-              />
-
-              <Typography
-                variant={'subtitle2'}
-                fontWeight={500}
-                sx={{
-                  color: palette.grey[500],
-                }}
-              >
-                {openingHours}
-              </Typography>
-            </Stack>
-          )}
-          <Stack direction={'row'} alignItems={'center'} gap={8}>
-            <WifiPasswordRoundedIcon
-              sx={{ color: palette.grey[500] }}
-              fontSize={'small'}
-            />
-
-            <Typography
-              variant={'subtitle2'}
-              fontWeight={500}
-              sx={{
-                color: palette.grey[500],
+        {isMobile &&
+          currentLocationText &&
+          (location?.googleUrl ? (
+            <Link
+              href={location.googleUrl}
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                gap: 4,
+                textDecoration: 'none',
               }}
             >
-              {pathname}2001
-            </Typography>
-          </Stack>
-        </Stack>
+              <FmdGoodOutlinedIcon
+                sx={{ color: palette.text.secondary, fontSize: 16 }}
+              />
+              <Typography
+                variant={'subtitle2'}
+                fontSize={12}
+                fontWeight={400}
+                color={palette.text.secondary}
+              >
+                {currentLocationText}
+              </Typography>
+            </Link>
+          ) : (
+            <Stack
+              direction={'row'}
+              gap={4}
+              sx={{
+                textDecoration: 'none',
+              }}
+            >
+              <FmdGoodOutlinedIcon
+                sx={{ color: palette.text.secondary, fontSize: 16 }}
+              />
+              <Typography
+                variant={'subtitle2'}
+                fontSize={12}
+                fontWeight={400}
+                color={palette.text.secondary}
+              >
+                {currentLocationText}
+              </Typography>
+            </Stack>
+          ))}
       </Stack>
+      <Divider variant={'fullWidth'} flexItem />
 
-      <Typography
-        paragraph
-        variant={'subtitle2'}
-        fontWeight={500}
-        sx={{
-          color: palette.grey[500],
-        }}
-      >
-        {displayText}
-        {
-          <Button
-            sx={{
-              display: isExpanded ? 'block' : 'inline',
-              cursor: 'pointer',
-              fontWeight: 700,
-              paddingLeft: 10,
-            }}
-            variant={'text'}
-            onClick={handleToggle}
-          >
-            {' '}
-            {isExpanded ? 'Hide description' : 'Show more'}
-          </Button>
-        }
-      </Typography>
+      {!isMobile && (
+        <Stack
+          direction={'row'}
+          justifyContent={'flex-start'}
+          gap={8}
+          padding={16}
+          sx={{
+            background: palette.primary.main,
+          }}
+        >
+          {location && (
+            <PageInfoBlock
+              title={'Address:'}
+              infoText={`Brodway 13B, New york, ${location?.country}`}
+              href={location?.googleUrl}
+              linkIcon={
+                <FmdGoodOutlinedIcon
+                  sx={{ color: palette.text.secondary, fontSize: 16 }}
+                />
+              }
+              linkText={'Open'}
+            />
+          )}
+
+          <Divider orientation="vertical" flexItem />
+
+          {openingHours && (
+            <PageInfoBlock
+              title={'Working hours:'}
+              infoText={openingHours}
+              linkIcon={
+                <QueryBuilderRoundedIcon
+                  sx={{ color: palette.text.secondary, fontSize: 16 }}
+                />
+              }
+            />
+          )}
+          <Divider orientation="vertical" flexItem />
+          <PageInfoBlock
+            title={'Wifi:'}
+            infoText={`${pathname}2001`}
+            linkIcon={
+              <WifiPasswordRoundedIcon
+                sx={{ color: palette.text.secondary, fontSize: 16 }}
+              />
+            }
+          />
+        </Stack>
+      )}
     </Stack>
   );
 };

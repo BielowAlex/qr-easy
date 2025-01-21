@@ -1,9 +1,11 @@
-import { IPage } from '@/types';
+import { IPage, PagePanelTabsEnum } from '@/types';
 import { create } from 'zustand/react';
 
 interface IState {
   isDraftChanged: boolean;
   currentPage: IPage | null;
+  currentPanelTab: PagePanelTabsEnum;
+  setPanelTab: (currentPanelTab: PagePanelTabsEnum) => void;
   draftData: IPage | null;
   setCurrentPage: (currentPage: IPage) => void;
   setDraftData: (draftData: IPage | null) => void;
@@ -13,12 +15,15 @@ interface IState {
 }
 
 export const usePagePanelStore = create<IState>((set, get) => ({
+  currentPanelTab: PagePanelTabsEnum.SEO,
   isDraftChanged: false,
   currentPage: null,
   draftData: null,
   setCurrentPage: (currentPage) => {
-    console.log(currentPage);
     set({ currentPage });
+  },
+  setPanelTab: (currentPanelTab) => {
+    set({ currentPanelTab });
   },
   setDraftData: (draftData) => {
     const { currentPage } = get();

@@ -1,6 +1,7 @@
 'use client';
 import { ModalHeader } from '@/components';
 import { api } from '@/lib';
+import { checkIsUrlValid } from '@/lib/utils/checkIsUrlValid.util';
 import { ICreateQrBody } from '@/types/qr-types';
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import {
@@ -53,15 +54,7 @@ const CreateQrModal: React.FC<Props> = ({
   const [errorMessage, setErrorMessage] = useState<string | null>(null); // Стан для помилки
   const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false); // Стан для Snackbar
 
-  const checkUrlRegExp: RegExp =
-    /^[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/;
-  const checkHttpUrlRegExp: RegExp =
-    /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
-
-  const isUrlValid: boolean =
-    inputLink.includes('http') || inputLink.includes('https')
-      ? checkHttpUrlRegExp.test(inputLink)
-      : checkUrlRegExp.test(inputLink);
+  const isUrlValid: boolean = checkIsUrlValid(inputLink);
 
   const { palette } = useTheme();
 

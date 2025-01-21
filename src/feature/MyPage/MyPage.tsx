@@ -15,8 +15,7 @@ const Hero = styled(Stack)(({ theme }) => ({
   height: 300,
   minHeight: 250,
   backgroundPosition: 'center',
-  borderBottom: '1px solid',
-  borderBottomColor: theme.palette.grey[300],
+
   [theme.breakpoints.up('sm')]: {
     height: 350,
   },
@@ -61,7 +60,7 @@ const MyPage: React.FC<Props> = ({ isMobile, sx, page }) => {
   const { backgroundUrl, logoUrl, name } = data as IPage;
 
   return (
-    <Stack sx={{ position: 'relative', ...sx }}>
+    <Stack sx={{ position: 'relative', width: '100%', ...sx }}>
       <PageHeader logoUrl={logoUrl} name={name} />
       <Hero
         justifyContent={'center'}
