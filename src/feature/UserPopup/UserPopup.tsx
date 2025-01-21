@@ -11,11 +11,8 @@ const UserPopup: React.FC = () => {
   const { user } = useUserStore();
 
   const handlePopoverOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
-    console.log(event.currentTarget);
     setAnchorEl(event.currentTarget);
   };
-
-  console.log(isPopupOpen);
 
   const handlePopoverClose = () => {
     setAnchorEl(null);

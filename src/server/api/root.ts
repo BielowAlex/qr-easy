@@ -1,5 +1,6 @@
 import {
   languageRouter,
+  locationRouter,
   pageRouter,
   qrCodeRouter,
   userRouter,
@@ -11,6 +12,7 @@ export const appRouter = createTrpcRouter({
   qr: qrCodeRouter,
   pages: pageRouter,
   language: languageRouter,
+  location: locationRouter,
 });
 
 export type AppRouter = typeof appRouter;

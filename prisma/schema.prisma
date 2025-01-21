@@ -26,6 +26,7 @@ model User {
   authUserId String?  @unique
   qrCodes    QRCode[] @relation("UserQRCodes")
   pages      Page[]   @relation("UserPages")
+  Post       Post[]   @relation("UserPosts")
 }
 
 model QRCode {
@@ -63,6 +64,7 @@ model Page {
 model Location {
   id        String  @id @default(auto()) @map("_id") @db.ObjectId
   country   String
+  city      String?
   address   String?
   latitude  Float?
   longitude Float?
@@ -102,4 +104,14 @@ model Event {
   type        String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model Post {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  isMain    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ownerId   String   @db.ObjectId
+  owner     User     @relation("UserPosts", fields: [ownerId], references: [id])
 }

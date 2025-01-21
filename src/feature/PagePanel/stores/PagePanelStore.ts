@@ -15,7 +15,7 @@ interface IState {
 }
 
 export const usePagePanelStore = create<IState>((set, get) => ({
-  currentPanelTab: PagePanelTabsEnum.BASIC_INFO,
+  currentPanelTab: PagePanelTabsEnum.SEO,
   isDraftChanged: false,
   currentPage: null,
   draftData: null,

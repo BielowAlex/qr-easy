@@ -23,6 +23,7 @@ export interface IPage {
 export interface ILocation {
   id: string;
   country: string;
+  city?: string | null;
   address?: string | null;
   latitude?: number | null;
   longitude?: number | null;
@@ -65,7 +66,7 @@ export interface IPageTranslation {
 }
 
 export enum PagePanelTabsEnum {
-  BASIC_INFO = 'BASIC_INFO',
+  SEO = 'SEO',
   LOCATION = 'LOCATION',
   PHOTOS = 'PHOTOS',
   DESCRIPTION = 'DESCRIPTION',

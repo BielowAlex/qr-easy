@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import React, { ChangeEvent } from 'react';
 
-const BasicInfoForm: React.FC = () => {
+const SeoForm: React.FC = () => {
   const { setDraftData, draftData, saveDraftChange } = usePagePanelStore();
 
   const { mutateAsync: updatePageById } = api.pages.updateById.useMutation();
@@ -63,7 +63,7 @@ const BasicInfoForm: React.FC = () => {
   return (
     <Stack>
       <PagePanelFormHeader
-        title={'Basic info'}
+        title={'SEO'}
         description={
           'Here you can modify the basic settings of your page, such as "Brand\n' +
           '          Name," "Website Path," and "System Description of Your Brand."\n' +
@@ -133,4 +133,4 @@ const BasicInfoForm: React.FC = () => {
   );
 };
 
-export { BasicInfoForm };
+export { SeoForm };

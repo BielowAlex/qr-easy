@@ -26,8 +26,8 @@ const PagePanelTabs: React.FC = () => {
       }}
     >
       <Tab
-        value={PagePanelTabsEnum.BASIC_INFO}
-        label={'Basic Info'}
+        value={PagePanelTabsEnum.SEO}
+        label={'SEO'}
         sx={{ fontWeight: 600 }}
       />
       <Tab

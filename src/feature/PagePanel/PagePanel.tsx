@@ -1,11 +1,13 @@
 'use client';
 import { PageLoader } from '@/components';
 import {
-  BasicInfoForm,
+  DescriptionForm,
+  LocationForm,
   PagePanelHeader,
   PagePanelTabs,
   PhoneView,
   PhotosForm,
+  SeoForm,
 } from '@/feature';
 import { BrowserView } from '@/feature/PagePanel/components/BrowserView';
 import { usePagePanelStore } from '@/feature/PagePanel/stores';
@@ -54,14 +56,15 @@ const PagePanel: React.FC<Props> = ({ page }) => {
           }}
         >
           <PagePanelTabs />
-          {currentPanelTab === PagePanelTabsEnum.BASIC_INFO && (
-            <BasicInfoForm />
-          )}
+          {currentPanelTab === PagePanelTabsEnum.SEO && <SeoForm />}
           {currentPanelTab === PagePanelTabsEnum.PHOTOS && <PhotosForm />}
-          {currentPanelTab === PagePanelTabsEnum.LOCATION && <PhotosForm />}
+          {currentPanelTab === PagePanelTabsEnum.LOCATION && <LocationForm />}
+          {currentPanelTab === PagePanelTabsEnum.DESCRIPTION && (
+            <DescriptionForm />
+          )}
         </Stack>
 
-        {currentPanelTab === PagePanelTabsEnum.BASIC_INFO ? (
+        {currentPanelTab === PagePanelTabsEnum.SEO ? (
           <BrowserView />
         ) : (
           <PhoneView />

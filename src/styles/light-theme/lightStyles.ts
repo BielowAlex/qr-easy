@@ -11,7 +11,7 @@ export const lightStyles: ThemeOptions = {
       main: '#090909',
       light: '#3F3F3F',
       dark: '#292929',
-      contrastText: '#090909',
+      contrastText: '#fff',
     },
     secondary: {
       main: '#8F0906',
@@ -63,7 +63,7 @@ export const lightStyles: ThemeOptions = {
     tonalOffset: 0.2,
     text: {
       primary: 'rgba(0, 0, 0, 0.87)',
-      secondary: 'rgba(0, 0, 0, 0.6)',
+      secondary: '#717680',
       disabled: 'rgba(0, 0, 0, 0.38)',
     },
     divider: '#717680',
